@@ -1,0 +1,11 @@
+C:\Projects\UmbracoAdvanced\UmbracoAdvanced.Core\bin\Debug\net7.0\UmbracoAdvanced.Core.deps.json
+C:\Projects\UmbracoAdvanced\UmbracoAdvanced.Core\bin\Debug\net7.0\UmbracoAdvanced.Core.dll
+C:\Projects\UmbracoAdvanced\UmbracoAdvanced.Core\bin\Debug\net7.0\UmbracoAdvanced.Core.pdb
+C:\Projects\UmbracoAdvanced\UmbracoAdvanced.Core\obj\Debug\net7.0\UmbracoAdvanced.Core.GeneratedMSBuildEditorConfig.editorconfig
+C:\Projects\UmbracoAdvanced\UmbracoAdvanced.Core\obj\Debug\net7.0\UmbracoAdvanced.Core.AssemblyInfoInputs.cache
+C:\Projects\UmbracoAdvanced\UmbracoAdvanced.Core\obj\Debug\net7.0\UmbracoAdvanced.Core.AssemblyInfo.cs
+C:\Projects\UmbracoAdvanced\UmbracoAdvanced.Core\obj\Debug\net7.0\UmbracoAdvanced.Core.csproj.CoreCompileInputs.cache
+C:\Projects\UmbracoAdvanced\UmbracoAdvanced.Core\obj\Debug\net7.0\UmbracoAdvanced.Core.dll
+C:\Projects\UmbracoAdvanced\UmbracoAdvanced.Core\obj\Debug\net7.0\refint\UmbracoAdvanced.Core.dll
+C:\Projects\UmbracoAdvanced\UmbracoAdvanced.Core\obj\Debug\net7.0\UmbracoAdvanced.Core.pdb
+C:\Projects\UmbracoAdvanced\UmbracoAdvanced.Core\obj\Debug\net7.0\ref\UmbracoAdvanced.Core.dll
