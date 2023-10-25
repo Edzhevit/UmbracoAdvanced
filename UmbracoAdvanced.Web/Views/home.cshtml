@@ -11,6 +11,8 @@
     <div class="section__hero-content">
         <h1>@Model.HeroHeader</h1>
         <p class="section__description">@Model.HeroDescription</p>
+        <hr/>
+        <p class="section__description">@Model.ShortHeroDescription</p>
         @if (Model.HeroCtalink != null)
         {
             <a class="button button--border--solid" href="@Model.HeroCtalink.Url()">

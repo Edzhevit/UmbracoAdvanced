@@ -3,6 +3,15 @@
     <TargetFramework>net7.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
+  <ItemGroup>
+    <Content Include="App_Plugins\BlockListElements\Image\Image.html" />
+    <Content Include="App_Plugins\BlockListElements\RichText\RichText.html" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App_Plugins\BlockListElements\Image\image.controller.js" />
+    <None Include="App_Plugins\BlockListElements\package.manifest" />
+    <None Include="App_Plugins\BlockListElements\RichText\richtext.controller.js" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Umbraco.Cms" Version="12.2.0" />

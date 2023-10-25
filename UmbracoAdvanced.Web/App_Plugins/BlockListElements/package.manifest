@@ -1,0 +1,7 @@
+﻿{
+	"css": [],
+	"javascript" : [
+		"~/App_Plugins/BlockListElements/Image/image.controller.js",
+		"~/App_Plugins/BlockListElements/RichText/richtext.controller.js"
+	]
+}

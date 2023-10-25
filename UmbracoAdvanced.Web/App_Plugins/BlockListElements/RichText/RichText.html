@@ -1,0 +1,15 @@
+﻿<style>
+    .text {
+        position: relative;
+        display: block;
+        cursor: pointer;
+        line-height: 1.5;
+        font-family: 'Lato';
+        margin: 20px 0;
+        font-weight: 300;
+    }
+
+</style>
+<div class="blockelement__draggable-element" ng-controller="richtextController as vm" ng-click="block.edit()">
+    <div class="text" ng-bind-html="vm.richTextContent" style="background-color: #{{vm.backgroundColor}}"></div>
+</div>
