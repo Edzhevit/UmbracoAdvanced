@@ -5,11 +5,15 @@
   </PropertyGroup>
   <ItemGroup>
     <Content Include="App_Plugins\BlockListElements\Image\Image.html" />
+    <Content Include="App_Plugins\BlockListElements\ProductListing\productlisting.html" />
     <Content Include="App_Plugins\BlockListElements\RichText\RichText.html" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App_Plugins\BlockListElements\Image\image.controller.js" />
     <None Include="App_Plugins\BlockListElements\package.manifest" />
+    <None Include="App_Plugins\BlockListElements\ProductListing\productlisting.controller.js" />
+    <None Include="App_Plugins\BlockListElements\ProductListing\productlisting.resource.js" />
+    <None Include="App_Plugins\BlockListElements\ProductListing\productlisting.service.js" />
     <None Include="App_Plugins\BlockListElements\RichText\richtext.controller.js" />
   </ItemGroup>
 
