@@ -1,7 +1,9 @@
 ﻿using Umbraco.Cms.Core.Composing;
-using Umbraco.Cms.Web.Common.ApplicationBuilder;
-using UmbracoAdvanced.Web.Controllers;
+using Umbraco.Cms.Core.Mapping;
 using UmbracoAdvanced.Core;
+using UmbracoAdvanced.Core.Repository;
+using UmbracoAdvanced.Core.Services;
+using UmbracoAdvanced.Web.Mappings;
 
 namespace UmbracoAdvanced.Web.Composers;
 
@@ -10,6 +12,9 @@ public class ProductComposer : IComposer
     public void Compose(IUmbracoBuilder builder)
     {
         builder.Services.AddScoped<IProductService, ProductService>();
+        builder.Services.AddScoped<IProductRepository, ProductRepository>();
+
+        builder.WithCollectionBuilder<MapDefinitionCollectionBuilder>().Add<ProductMapping>();
 
         // USE IT WITH CUSTOM ROUTING, REMOVE IF YOU USE ATTRIBUTE ROUTING
         // builder.Services.Configure<UmbracoPipelineOptions>(opt =>

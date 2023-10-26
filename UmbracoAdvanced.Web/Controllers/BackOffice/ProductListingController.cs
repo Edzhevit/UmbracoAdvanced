@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Umbraco.Cms.Web.BackOffice.Controllers;
-using UmbracoAdvanced.Core;
+using UmbracoAdvanced.Core.Services;
 
 namespace UmbracoAdvanced.Web.Controllers.BackOffice;
 

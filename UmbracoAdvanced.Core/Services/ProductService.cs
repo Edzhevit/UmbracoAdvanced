@@ -3,6 +3,7 @@ using Umbraco.Extensions;
 using UmbracoAdvanced.Core.Models;
 using UmbracoAdvanced.Core.Models.Records;
 using UmbracoAdvanced.Core.Models.Umbraco;
+using UmbracoAdvanced.Core.Services;
 
 namespace UmbracoAdvanced.Core;
 
