@@ -15,7 +15,7 @@ public class ProductListingViewComponent : ViewComponent
 
     public IViewComponentResult Invoke(int number)
     {
-        var model = new ProductListingViewModel()
+        var model = new ProductListingBlockListViewModel()
         {
             Products = _productService.GetUmbracoProducts(number)
         };

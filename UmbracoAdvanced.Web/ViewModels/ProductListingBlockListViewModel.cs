@@ -2,7 +2,7 @@
 
 namespace UmbracoAdvanced.Web.ViewModels;
 
-public class ProductListingViewModel
+public class ProductListingBlockListViewModel
 {
     public List<ProductResponseItem> Products { get; set; }
 }
