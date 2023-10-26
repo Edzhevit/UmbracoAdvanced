@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Umbraco.Cms.Core.Web;
 using Umbraco.Cms.Web.BackOffice.Controllers;
-using UmbracoAdvanced.Core.Models.Umbraco;
+using UmbracoAdvanced.Core;
 
 namespace UmbracoAdvanced.Web.Controllers.BackOffice;
 
@@ -11,34 +10,15 @@ namespace UmbracoAdvanced.Web.Controllers.BackOffice;
 /// </summary>
 public class ProductListingController : UmbracoAuthorizedApiController
 {
-    private IUmbracoContextFactory _contextFactory;
+    private IProductService _productService;
 
-    public ProductListingController(IUmbracoContextFactory contextFactory)
+    public ProductListingController(IProductService productService)
     {
-        _contextFactory = contextFactory;
+        _productService = productService;
     }
 
     public IActionResult GetProducts(int number)
     {
-        var final = new List<ProductResponse>();
-
-        using var cref = _contextFactory.EnsureUmbracoContext();
-        var contentCache = cref.UmbracoContext.Content;
-        var products = contentCache
-            ?.GetAtRoot()
-            .FirstOrDefault(x => x.ContentType.Alias == Home.ModelTypeAlias)
-            ?.Descendant<Products>()
-            ?.Children<Product>()
-            ?.Take(number);
-
-        if (products != null && products.Any())
-        {
-            final = products.Select(x => new ProductResponse(x.Id, x.ProductName ?? x.Name, x.Photos?.Url() ?? "#"))
-                .ToList();
-        }
-
-        return Ok(final);
+        return Ok(_productService.GetUmbracoProducts(number));
     }
-
-    private record ProductResponse(int id, string name, string imageUrl);
 }
