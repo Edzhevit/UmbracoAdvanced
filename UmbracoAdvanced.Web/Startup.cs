@@ -1,6 +1,7 @@
 using System.Security.Cryptography.X509Certificates;
 using Microsoft.EntityFrameworkCore;
 using OpenIddict.Abstractions;
+using UmbracoAdvanced.Web.Extensions;
 
 namespace UmbracoAdvanced.Web;
 
@@ -38,6 +39,7 @@ public class Startup
             .AddWebsite()
             .AddDeliveryApi()
             .AddComposers()
+            .AddContactRequestTable()
             .Build();
 
         services.AddDbContext<DbContext>(options =>
