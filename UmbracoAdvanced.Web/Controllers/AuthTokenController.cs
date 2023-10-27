@@ -39,7 +39,7 @@ public class AuthTokenController : ControllerBase
 
             identity
                 .SetClaim(OpenIddictConstants.Claims.Subject, request.ClientId)
-                .SetClaim(OpenIddictConstants.Claims.Name, await _applicationManager.GetDisplayNameAsync(request.ClientId))
+                .SetClaim(OpenIddictConstants.Claims.Name, await _applicationManager.GetDisplayNameAsync(application))
                 .SetClaims(OpenIddictConstants.Claims.Role, new[] {"ClientApplication"}.ToImmutableArray());
 
             identity.SetScopes(request.GetScopes());
