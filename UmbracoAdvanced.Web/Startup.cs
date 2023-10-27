@@ -129,7 +129,7 @@ public class Startup
             await manager.CreateAsync(new OpenIddictApplicationDescriptor()
             {
                 ClientId = "postman",
-                ClientSecret = "postman-secret",
+                ClientSecret = "postman_secret",
                 DisplayName = "Postman Client",
                 Permissions =
                 {
