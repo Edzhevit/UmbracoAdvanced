@@ -1,4 +1,5 @@
-﻿using Umbraco.Cms.Core;
+﻿using SixLabors.ImageSharp.Formats.Jpeg;
+using Umbraco.Cms.Core;
 using Umbraco.Cms.Core.IO;
 using Umbraco.Cms.Core.PropertyEditors;
 using Umbraco.Cms.Core.PublishedCache;
@@ -8,12 +9,19 @@ using Umbraco.Cms.Core.Web;
 using Umbraco.Extensions;
 using UmbracoAdvanced.Core.Models;
 using UmbracoAdvanced.Core.Models.Umbraco;
+using Image = UmbracoAdvanced.Core.Models.Umbraco.Image;
 
 namespace UmbracoAdvanced.Core.Repository;
 
 public class ProductRepository : IProductRepository
 {
     private readonly Guid _productsMediaFolder = Guid.Parse("1ad4e9a3-4ad5-476c-aba2-9602e34e323f");
+    private string _productNameAlias = string.Empty;
+    private string _productPriceAlias = string.Empty;
+    private string _productCategoriesAlias = string.Empty;
+    private string _productDescriptionAlias = string.Empty;
+    private string _productSkuAlias = string.Empty;
+    private string _productPhotoAlias = string.Empty;
 
     private readonly IUmbracoContextFactory _contextFactory;
     private readonly IContentService _contentService;
@@ -37,7 +45,14 @@ public class ProductRepository : IProductRepository
         _mediaUrlGeneratorCollection = mediaUrlGeneratorCollection;
         _contentTypeBaseServiceProvider = contentTypeBaseServiceProvider;
         _publishedSnapshotAccessor = publishedSnapshotAccessor;
-    }
+
+        _productNameAlias = Product.GetModelPropertyType(_publishedSnapshotAccessor, x => x.ProductName).Alias;
+        _productPriceAlias = Product.GetModelPropertyType(_publishedSnapshotAccessor, x => x.Price).Alias;
+        _productCategoriesAlias = Product.GetModelPropertyType(_publishedSnapshotAccessor, x => x.Category).Alias;
+        _productDescriptionAlias = Product.GetModelPropertyType(_publishedSnapshotAccessor, x => x.Description).Alias;
+        _productSkuAlias = Product.GetModelPropertyType(_publishedSnapshotAccessor, x => x.Sku).Alias;
+        _productPhotoAlias = Product.GetModelPropertyType(_publishedSnapshotAccessor, x => x.Photos).Alias;
+}
 
     public List<Product> GetProducts(string? productSKU, decimal? maxPrice)
     {
@@ -61,9 +76,72 @@ public class ProductRepository : IProductRepository
         return final;
     }
 
+    public Product Get(int id)
+    {
+        using var cref = _contextFactory.EnsureUmbracoContext();
+        var content = cref.UmbracoContext.Content;
+        return (Product)content.GetById(id);
+    }
+
     public Product Create(ProductCreationItem product)
     {
-        return null;
+        var productImage = CreateProductImage(product.PhotoFileName, product.Photo);
+        if (productImage == null)
+        {
+            return null;
+        }
+
+        var productsRoot = GetProductsRootPage();
+        var productContent = _contentService.Create(product.ProductName, productsRoot.Key, Product.ModelTypeAlias);
+
+        productContent.SetValue(_productNameAlias, product.ProductName);
+        productContent.SetValue(_productPriceAlias, product.Price);
+        productContent.SetValue(_productCategoriesAlias, string.Join(",", product.Categories));
+        productContent.SetValue(_productDescriptionAlias, product.Description);
+        productContent.SetValue(_productSkuAlias, product.SKU);
+        productContent.SetValue(_productPhotoAlias, productImage);
+
+        _contentService.SaveAndPublish(productContent);
+
+        return Get(productContent.Id);
+    }
+
+    public Product Update(int id, ProductUpdateItem product)
+    {
+        var productContent = _contentService.GetById(id);
+        if (!string.IsNullOrEmpty(product.ProductName))
+        {
+            productContent.SetValue(_productNameAlias, product.ProductName);
+        }
+        if (product.Price != null)
+        {
+            productContent.SetValue(_productPriceAlias, product.Price);
+        }
+        if (product.Categories != null && product.Categories.Any())
+        {
+            productContent.SetValue(_productCategoriesAlias, string.Join(",", product.Categories));
+        }
+        if (!string.IsNullOrEmpty(product.Description))
+        {
+            productContent.SetValue(_productDescriptionAlias, product.Description);
+        }
+        if (!string.IsNullOrEmpty(product.SKU))
+        {
+            productContent.SetValue(_productSkuAlias, product.SKU);
+        }
+
+        if (!string.IsNullOrEmpty(product.PhotoFileName) && !string.IsNullOrEmpty(product.Photo))
+        {
+            var productImage = CreateProductImage(product.PhotoFileName, product.Photo);
+            if (productImage != null)
+            {
+                productContent.SetValue(_productPhotoAlias, productImage);
+            }
+        }
+
+        _contentService.SaveAndPublish(productContent);
+
+        return Get(id);
     }
 
     public bool Delete(int id)
@@ -89,6 +167,33 @@ public class ProductRepository : IProductRepository
 
     private GuidUdi? CreateProductImage(string filename, string photo)
     {
-        return null;
+        //Save image to a tmp path
+        var tmpFilePath = Path.GetTempFileName();
+        using var image = SixLabors.ImageSharp.Image.Load(Convert.FromBase64String(photo));
+        image.Save(tmpFilePath, new JpegEncoder());
+
+        //load file into a file stream
+        var fileInfo = new FileInfo(tmpFilePath);
+        var fileStream = fileInfo.OpenReadWithRetry();
+        if (fileStream == null)
+        {
+            throw new InvalidOperationException("Could not acquire file stream");
+        }
+
+        var umbracoMedia = _mediaService.CreateMedia(filename, _productsMediaFolder, Image.ModelTypeAlias);
+
+        using (fileStream)
+        {
+            umbracoMedia.SetValue(_mediaFileManager, _mediaUrlGeneratorCollection, _shortStringHelper, 
+                _contentTypeBaseServiceProvider, Constants.Conventions.Media.File, filename, fileStream);
+
+            var result = _mediaService.Save(umbracoMedia);
+            if (!result.Success)
+            {
+                return null;
+            }
+        }
+
+        return umbracoMedia.GetUdi();
     }
 }

@@ -1,13 +1,17 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Umbraco.Cms.Core.Mapping;
 using Umbraco.Cms.Web.Common.Controllers;
+using UmbracoAdvanced.Core.Models;
 using UmbracoAdvanced.Core.Models.Umbraco;
 using UmbracoAdvanced.Core.Repository;
 using UmbracoAdvanced.Web.ViewModels;
 
 namespace UmbracoAdvanced.Web.Controllers;
 
-// /umbraco/api/productapi/{action}
+// If route is not specified the auto route is -> /umbraco/api/productapi/{action}
+
+// /api/products
+[Route("api/products")]
 public class ProductApiController : UmbracoApiController
 {
     private readonly IProductRepository _productRepository;
@@ -19,33 +23,54 @@ public class ProductApiController : UmbracoApiController
         _umbracoMapper = umbracoMapper;
     }
 
-    // /api/products
-    [HttpGet("api/products")]
-    public IActionResult Read()
+    public record ProductReadRequest(string? productSKU, decimal? maxPrice);
+
+    [HttpGet]
+    public IActionResult Read([FromQuery] ProductReadRequest request)
     {
         var mapped = _umbracoMapper
-            .MapEnumerable<Product, ProductApiResponseItem>(_productRepository.GetProducts());
+            .MapEnumerable<Product, ProductApiResponseItem>(_productRepository.GetProducts(request.productSKU, request.maxPrice));
         return Ok(mapped);
     }
 
-    // /api/products
-    [HttpPost("api/products")]
-    public IActionResult Create()
+    [HttpPost]
+    public IActionResult Create([FromBody]ProductCreationItem request)
     {
-        return Ok("Create");
+        if (!ModelState.IsValid)
+        {
+            return BadRequest("Fields error");
+        }
+
+        var product = _productRepository.Create(request);
+
+        return Ok(_umbracoMapper.Map<Product, ProductApiResponseItem>(product));
     }
 
-    // /api/products
-    [HttpPut("api/products")]
-    public IActionResult Update()
+    [HttpPut("{id}")]
+    public IActionResult Update(int id, [FromBody]ProductUpdateItem request)
     {
-        return Ok("Update");
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
+
+        if (_productRepository.Get(id) == null)
+        {
+            return NotFound();
+        }
+
+        var product = _productRepository.Update(id, request);
+        return Ok(_umbracoMapper.Map<Product, ProductApiResponseItem>(product));
     }
 
-    // /api/products
-    [HttpDelete("api/products")]
-    public IActionResult Delete()
+    [HttpDelete("{id}")]
+    public IActionResult Delete(int id)
     {
-        return Ok("Delete");
+        if (_productRepository.Get(id) == null)
+        {
+            return NotFound();
+        }
+        var result = _productRepository.Delete(id);
+        return result ? Ok() : NotFound();
     }
 }
