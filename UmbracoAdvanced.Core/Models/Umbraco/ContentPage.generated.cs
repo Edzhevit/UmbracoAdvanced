@@ -50,6 +50,14 @@ namespace UmbracoAdvanced.Core.Models.Umbraco
 		// properties
 
 		///<summary>
+		/// Old url
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "12.2.0+173d8dc")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("oldUrl")]
+		public virtual string OldUrl => this.Value<string>(_publishedValueFallback, "oldUrl");
+
+		///<summary>
 		/// Content
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "12.2.0+173d8dc")]

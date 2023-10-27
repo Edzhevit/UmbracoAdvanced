@@ -4,6 +4,7 @@ using UmbracoAdvanced.Core;
 using UmbracoAdvanced.Core.Repository;
 using UmbracoAdvanced.Core.Services;
 using UmbracoAdvanced.Web.Mappings;
+using UmbracoAdvanced.Web.Routing;
 
 namespace UmbracoAdvanced.Web.Composers;
 
@@ -11,6 +12,8 @@ public class ProductComposer : IComposer
 {
     public void Compose(IUmbracoBuilder builder)
     {
+        builder.UrlSegmentProviders().Insert<ProductPageUrlSegmentProvider>();
+
         builder.Services.AddScoped<IProductService, ProductService>();
         builder.Services.AddScoped<IProductRepository, ProductRepository>();
 
