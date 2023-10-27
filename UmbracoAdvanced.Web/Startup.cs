@@ -1,6 +1,7 @@
 using System.Security.Cryptography.X509Certificates;
 using Microsoft.EntityFrameworkCore;
 using OpenIddict.Abstractions;
+using UmbracoAdvanced.Core.Services;
 using UmbracoAdvanced.Web.Extensions;
 
 namespace UmbracoAdvanced.Web;
@@ -41,6 +42,8 @@ public class Startup
             .AddComposers()
             .AddContactRequestTable()
             .Build();
+
+        services.AddScoped<IContactRequestService, ContactRequestService>();
 
         services.AddDbContext<DbContext>(options =>
         {
