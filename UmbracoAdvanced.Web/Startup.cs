@@ -1,6 +1,8 @@
 using System.Security.Cryptography.X509Certificates;
 using Microsoft.EntityFrameworkCore;
 using OpenIddict.Abstractions;
+using Umbraco.Cms.Core.Notifications;
+using UmbracoAdvanced.Core.NotificationHandlers;
 using UmbracoAdvanced.Core.Services;
 using UmbracoAdvanced.Web.Extensions;
 
@@ -41,6 +43,10 @@ public class Startup
             .AddDeliveryApi()
             .AddComposers()
             .AddContactRequestTable()
+            .AddNotificationHandler<ContentPublishingNotification, ContentPublishingNotificationHandler>()
+            .AddNotificationHandler<ContentPublishedNotification, ContentPublishedNotificationHandler>()
+            .AddNotificationHandler<SendingContentNotification, SendingContentNotificationHandler>()
+            .AddNotificationHandler<MenuRenderingNotification, MenuRenderingNotificationHandler>()
             .Build();
 
         services.AddScoped<IContactRequestService, ContactRequestService>();

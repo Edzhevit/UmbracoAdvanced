@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Umbraco.Cms.Web.Common.Controllers;
+using Umbraco.Cms.Web.BackOffice.Controllers;
 
 namespace UmbracoAdvanced.Web.Controllers;
 
@@ -9,7 +9,7 @@ namespace UmbracoAdvanced.Web.Controllers;
 /// UmbracoAuthorizedApiController is used to authorize the back office users
 /// UmbracoAuthorizedJsonController is used to authorize the back office users
 /// </summary>
-public class AuthorizedController : UmbracoAuthorizedController
+public class AuthorizedController : UmbracoAuthorizedApiController
 {
     public IActionResult Index()
     {
