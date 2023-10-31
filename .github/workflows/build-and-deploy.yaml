@@ -22,12 +22,12 @@ jobs:
       - name: display .net version
         run: dotnet --version
 
-      - name: write connection string
+      - name: edit connection string
         uses: benday-inc/edit-dbconnstr-in-appsettings@main
         with:
-          pathtosettingsfile: "${{ github.workspace }}/UmbracoAdvanced.Web/appsettings.json"
+          pathtosettingsfile: '${{ github.workspace }}/UmbracoAdvanced.Web/appsettings.json'
           name: "umbracoDbDSN"
-          connectionstring: "${{ secrets.prodconnectionstring }}"
+          connectionstring: "${{ secret.prodconnectionstring }}"
 
       - name: Build solution in release mode
         run: dotnet publish --configuration Release --output ./Release -r linux x64 --no-self-contained
