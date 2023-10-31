@@ -1,0 +1,43 @@
+name: UmbracoAdvanced deploy
+
+on:
+  push:
+    branches: [ main ]
+
+  workflow_dispatch:
+    
+#jobs definition
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup .NET SDK 7.x
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '7.x'
+
+      - name: display .net version
+        run: dotnet --version
+
+      - name: write connection string
+        uses: benday-inc/edit-dbconnstr-in-appsettings@main
+        with:
+          pathtosettingsfile: '${{ github.workspace }}/UmbracoAdvanced.Web/appsettings.json'
+          name: "umbracoDbDSN"
+          connectionstring: "${{ secrets.prodconnectionstring }}"
+
+      - name: Build solution in release mode
+        run: dotnet publish --configuration Release --output ./Release -r linux x64 --no-self-contained
+
+      # - name: Publish files on FTP
+      #   uses: SamKirkland/FTP-Deploy-Action@4.3.2
+      #   with:
+      #     server: ${{ secret.ftp_server }}
+      #     protocol: ftp
+      #     username: ${{ secret.ftp_username }}
+      #     password: ${{ secret.ftp_password }}
+      #     local-dir: ./Release/
+      #     server-dir: ./
