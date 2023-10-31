@@ -27,7 +27,7 @@ jobs:
         with:
           pathtosettingsfile: '${{ github.workspace }}/UmbracoAdvanced.Web/appsettings.json'
           name: "umbracoDbDSN"
-          connectionstring: ${{ secret.prodconnectionstring }}
+          connectionstring: "${{ secrets.prodconnectionstring }}"
 
       - name: Build solution in release mode
         run: dotnet publish --configuration Release --output ./Release -r linux x64 --no-self-contained
