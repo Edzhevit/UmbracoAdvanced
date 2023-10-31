@@ -1,0 +1,19 @@
+﻿{
+  "contentApps": [
+    {
+      "name": "Contact Requests",
+      "alias": "contactRequests",
+      "weight": 0,
+      "icon": "icon-phone",
+      "view": "~/App_Plugins/ContactRequests/contactrequests.html",
+      "show": [
+        "+content/contact"
+      ]
+    }
+  ],
+  "javascript": [
+    "~/App_Plugins/ContactRequests/contactrequests.controller.js",
+    "~/App_Plugins/ContactRequests/contactrequests.resource.js",
+    "~/App_Plugins/ContactRequests/contactrequests.service.js"
+  ]
+}

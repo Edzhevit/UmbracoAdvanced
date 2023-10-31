@@ -6,7 +6,7 @@ using Umbraco.Cms.Web.Common.Controllers;
 using UmbracoAdvanced.Core.Models;
 using UmbracoAdvanced.Core.Models.Umbraco;
 using UmbracoAdvanced.Core.Repository;
-using UmbracoAdvanced.Web.ViewModels;
+using UmbracoAdvanced.Web.ViewModels.Api;
 
 namespace UmbracoAdvanced.Web.Controllers;
 

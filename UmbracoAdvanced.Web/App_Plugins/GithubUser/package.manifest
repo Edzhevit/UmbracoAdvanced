@@ -1,0 +1,15 @@
+﻿{
+  "propertyEditors": [
+    {
+      "name": "Github user",
+      "alias": "githubUser",
+      "editor": {
+        "view": "~/App_Plugins/GithubUser/githubuser.html",
+        "valueType": "JSON"
+      }
+    }
+  ],
+  "javascript": [
+    "~/App_Plugins/GithubUser/githubuser.controller.js"
+  ]
+}

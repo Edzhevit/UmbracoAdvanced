@@ -7,7 +7,13 @@
     <Content Include="App_Plugins\BlockListElements\Image\Image.html" />
     <Content Include="App_Plugins\BlockListElements\ProductListing\productlisting.html" />
     <Content Include="App_Plugins\BlockListElements\RichText\RichText.html" />
+    <Content Include="App_Plugins\ContactRequests\contactrequests.html" />
+    <Content Include="App_Plugins\GithubUser\githubuser.html" />
+    <Content Include="App_Plugins\PeopleListView\peoplelistview.html" />
   </ItemGroup>
+	<ItemGroup>
+		<Content Update="App_Plugins/**" CopyToPublishDirectory="Always"/>
+	</ItemGroup>
   <ItemGroup>
     <None Include="App_Plugins\BlockListElements\Image\image.controller.js" />
     <None Include="App_Plugins\BlockListElements\package.manifest" />
@@ -15,6 +21,14 @@
     <None Include="App_Plugins\BlockListElements\ProductListing\productlisting.resource.js" />
     <None Include="App_Plugins\BlockListElements\ProductListing\productlisting.service.js" />
     <None Include="App_Plugins\BlockListElements\RichText\richtext.controller.js" />
+    <None Include="App_Plugins\ContactRequests\contactrequests.controller.js" />
+    <None Include="App_Plugins\ContactRequests\contactrequests.resource.js" />
+    <None Include="App_Plugins\ContactRequests\contactrequests.service.js" />
+    <None Include="App_Plugins\ContactRequests\package.manifest" />
+    <None Include="App_Plugins\GithubUser\githubuser.controller.js" />
+    <None Include="App_Plugins\GithubUser\package.manifest" />
+    <None Include="App_Plugins\PeopleListView\package.manifest" />
+    <None Include="App_Plugins\PeopleListView\peoplelistview.controller.js" />
   </ItemGroup>
 
   <ItemGroup>
@@ -28,12 +42,10 @@
     <!-- Opt-in to app-local ICU to ensure consistent globalization APIs across different platforms -->
     <PackageReference Include="Microsoft.ICU.ICU4C.Runtime" Version="68.2.0.9" />
     <PackageReference Include="Umbraco.TheStarterKit" Version="11.0.0" />
+    <PackageReference Include="uSync" Version="12.2.1" />
+    <PackageReference Include="uSync.Complete" Version="12.2.1.1" />
     <ProjectReference Include="..\UmbracoAdvanced.Core\UmbracoAdvanced.Core.csproj" />
     <RuntimeHostConfigurationOption Include="System.Globalization.AppLocalIcu" Value="68.2.0.9" Condition="$(RuntimeIdentifier.StartsWith('linux')) or $(RuntimeIdentifier.StartsWith('win')) or ('$(RuntimeIdentifier)' == '' and !$([MSBuild]::IsOSPlatform('osx')))" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="ViewModels\Api\" />
   </ItemGroup>
 
   <PropertyGroup>

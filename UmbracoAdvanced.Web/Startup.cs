@@ -43,6 +43,7 @@ public class Startup
             .AddDeliveryApi()
             .AddComposers()
             .AddContactRequestTable()
+            .AddContactRequestMappings()
             .AddNotificationHandler<ContentPublishingNotification, ContentPublishingNotificationHandler>()
             .AddNotificationHandler<ContentPublishedNotification, ContentPublishedNotificationHandler>()
             .AddNotificationHandler<SendingContentNotification, SendingContentNotificationHandler>()

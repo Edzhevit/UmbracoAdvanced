@@ -1,6 +1,6 @@
 ﻿using Umbraco.Cms.Core.Mapping;
 using UmbracoAdvanced.Core.Models.Umbraco;
-using UmbracoAdvanced.Web.ViewModels;
+using UmbracoAdvanced.Web.ViewModels.Api;
 
 namespace UmbracoAdvanced.Web.Mappings;
 

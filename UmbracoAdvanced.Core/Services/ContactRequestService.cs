@@ -12,6 +12,24 @@ public class ContactRequestService : IContactRequestService
         _scopeProvider = scopeProvider;
     }
 
+    public async Task<ContactRequestDBModel?> GetById(int id)
+    {
+        using var scope = _scopeProvider.CreateScope();
+        return await scope.Database.FirstOrDefaultAsync<ContactRequestDBModel>("SELECT * FROM ContactRequest WHERE ID=@0", id);
+    }
+
+    public async Task<int> GetTotalNumber()
+    {
+        using var scope = _scopeProvider.CreateScope(autoComplete:true);
+        return await scope.Database.ExecuteScalarAsync<int>("SELECT COUNT(*) FROM ContactRequest");
+    }
+
+    public async Task<List<ContactRequestDBModel>> GetAll()
+    {
+        using var scope = _scopeProvider.CreateScope(autoComplete: true);
+        return await scope.Database.FetchAsync<ContactRequestDBModel>("SELECT * FROM ContactRequest");
+    }
+
     public async Task<int> SaveContactRequest(string name, string email, string message)
     {
         var contactRequest = new ContactRequestDBModel() { Name = name, Email = email, Message = message };
@@ -20,11 +38,5 @@ public class ContactRequestService : IContactRequestService
         var result = await scope.Database.InsertAsync(contactRequest);
         scope.Complete();
         return contactRequest.Id;
-    }
-
-    public async Task<ContactRequestDBModel?> GetById(int id)
-    {
-        using var scope = _scopeProvider.CreateScope();
-        return await scope.Database.FirstOrDefaultAsync<ContactRequestDBModel>("SELECT * FROM ContactRequest WHERE ID=@0", id);
     }
 }

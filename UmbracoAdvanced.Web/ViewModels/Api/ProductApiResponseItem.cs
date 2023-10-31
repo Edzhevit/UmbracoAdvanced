@@ -1,4 +1,4 @@
-﻿namespace UmbracoAdvanced.Web.ViewModels;
+﻿namespace UmbracoAdvanced.Web.ViewModels.Api;
 
 public class ProductApiResponseItem
 {

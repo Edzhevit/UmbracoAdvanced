@@ -1,0 +1,5 @@
+﻿<div ng-controller="githubUserController" class="github-user-container" style="width: 220px">
+    <img ng-src="https://github.com/{{model.value.githubUsername || 'github'}}.png?size=200"/>
+    <input type="text" ng-model="model.value.githubUsername" placeholder="Github Username"/>
+    <input type="text" ng-model="model.value.githubPreferredLanguage" placeholder="Preferred programming language"/>
+</div>
