@@ -13,7 +13,7 @@ namespace UmbracoAdvanced.Web.Controllers;
 /// </summary>
 public class ProductsController : RenderController
 {
-    private IPublishedValueFallback _publishedValueFallback;
+    private readonly IPublishedValueFallback _publishedValueFallback;
     public ProductsController(ILogger<RenderController> logger, ICompositeViewEngine compositeViewEngine, IUmbracoContextAccessor umbracoContextAccessor, IPublishedValueFallback publishedValueFallback) 
         : base(logger, compositeViewEngine, umbracoContextAccessor)
     {
@@ -25,17 +25,16 @@ public class ProductsController : RenderController
     public IActionResult Index([FromQuery(Name = "maxprice")] decimal? maxPrice)
     {
         var products = (Products)CurrentPage;
-        var allProducts = products.Children<Product>();
+        var allProducts = products?.Children<Product>();
 
         if (maxPrice != null)
-        {
-            allProducts = allProducts.Where(x => x.Price <= maxPrice);
-        }
+            allProducts = allProducts?.Where(x => x.Price <= maxPrice);
 
         var model = new ProductListingViewModel(CurrentPage, _publishedValueFallback)
         {
-            Products = allProducts.ToList()
+            Products = allProducts?.ToList()
         };
+
         return CurrentTemplate(model);
     }
 }

@@ -8,11 +8,11 @@ using UmbracoAdvanced.Core.Models.Umbraco;
 
 namespace UmbracoAdvanced.Core.NotificationHandlers;
 
-public class SendingContentNotificationHandler : INotificationHandler<SendingContentNotification>
+public class SendingContent : INotificationHandler<SendingContentNotification>
 {
     private readonly IBackOfficeSecurityAccessor _backOfficeSecurityAccessor;
 
-    public SendingContentNotificationHandler(IBackOfficeSecurityAccessor backOfficeSecurityAccessor)
+    public SendingContent(IBackOfficeSecurityAccessor backOfficeSecurityAccessor)
     {
         _backOfficeSecurityAccessor = backOfficeSecurityAccessor;
     }
@@ -26,7 +26,7 @@ public class SendingContentNotificationHandler : INotificationHandler<SendingCon
 
     private void HideActionsFromNonAdminUsers(SendingContentNotification notification)
     {
-        var currentUser = _backOfficeSecurityAccessor.BackOfficeSecurity.CurrentUser;
+        var currentUser = _backOfficeSecurityAccessor?.BackOfficeSecurity?.CurrentUser;
         if (!currentUser.Groups.Any(x => x.Alias == Constants.Security.AdminGroupAlias))
         {
 
@@ -41,7 +41,7 @@ public class SendingContentNotificationHandler : INotificationHandler<SendingCon
 
             // Hide SaveAndPublish from NON-Admin users
             notification.Content.AllowedActions =
-                notification.Content.AllowedActions.Where(x => !actionsToRemove.Contains(x));
+                notification.Content.AllowedActions?.Where(x => !actionsToRemove.Contains(x));
             // Hide Save and Preview from NON-Admin users
             notification.Content.AllowPreview = false;
         }

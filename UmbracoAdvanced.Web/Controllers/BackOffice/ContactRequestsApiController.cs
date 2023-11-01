@@ -26,6 +26,6 @@ public class ContactRequestsApiController : UmbracoAuthorizedApiController
     public async Task<IActionResult> GetAll()
     {
         var contacts = await _contactRequestService.GetAll();
-        return Ok(_umbracoMapper.MapEnumerable<ContactRequestDBModel, ContactRequestResponseItem>(contacts));
+        return Ok(_umbracoMapper.MapEnumerable<ContactRequest, ContactRequestResponseItem>(contacts));
     }
 }

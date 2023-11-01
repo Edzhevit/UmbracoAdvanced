@@ -15,9 +15,6 @@ public class GithubUserPropertyValueConverter : PropertyValueConverterBase
     public override object ConvertIntermediateToObject(IPublishedElement owner, IPublishedPropertyType propertyType,
         PropertyCacheLevel referenceCacheLevel, object inter, bool preview)
     {
-        if (inter == null)
-            return null;
-
-        return JsonSerializer.Deserialize<GithubUserDTO>((string)inter);
+        return inter == null ? null : JsonSerializer.Deserialize<GithubUserDTO>((string)inter);
     }
 }

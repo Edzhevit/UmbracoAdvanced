@@ -17,16 +17,14 @@ public class ProductPageUrlSegmentProvider : IUrlSegmentProvider
         _urlSegmentProvider = new DefaultUrlSegmentProvider(stringHelper);
         _publishedSnapshotAccessor = publishedSnapshotAccessor;
 
-        _skuAlias = Product.GetModelPropertyType(_publishedSnapshotAccessor, x => x.Sku).Alias;
+        _skuAlias = Product.GetModelPropertyType(_publishedSnapshotAccessor, x => x.Sku)?.Alias;
     }
 
     public string GetUrlSegment(IContentBase content, string culture = null)
     {
         // only apply this rule for product pages
         if (content.ContentType.Alias != Product.ModelTypeAlias)
-        {
             return null;
-        }
 
         var currentSegment = _urlSegmentProvider.GetUrlSegment(content, culture);
         var productSKU = content.GetValue<string>(_skuAlias).ToLower();

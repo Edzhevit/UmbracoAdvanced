@@ -24,16 +24,6 @@ public class ProductController : UmbracoPageController, IVirtualPageController
         _contextAccessor = contextAccessor;
     }
 
-    // // attribute routing must inherit IVirtualPageController
-    // [Route("[controller]")]
-    // [Route("[controller]/[action]")]
-    // [HttpGet]
-    // public IActionResult Index()
-    // {
-    //     return View(CurrentPage);
-    // }
-
-
     // attribute routing must inherit IVirtualPageController
     [Route("[controller]/[action]/{id?}")]
     [HttpGet]

@@ -4,7 +4,6 @@ using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using OpenIddict.Abstractions;
-using OpenIddict.Core;
 using OpenIddict.Server.AspNetCore;
 
 namespace UmbracoAdvanced.Web.Controllers;

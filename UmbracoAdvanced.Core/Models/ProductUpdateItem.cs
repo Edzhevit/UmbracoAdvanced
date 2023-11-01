@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace UmbracoAdvanced.Core.Models;
+﻿namespace UmbracoAdvanced.Core.Models;
 
 public record ProductUpdateItem
 {

@@ -1,11 +1,9 @@
 ﻿using Umbraco.Cms.Core.Web;
 using Umbraco.Extensions;
 using UmbracoAdvanced.Core.Models;
-using UmbracoAdvanced.Core.Models.Records;
 using UmbracoAdvanced.Core.Models.Umbraco;
-using UmbracoAdvanced.Core.Services;
 
-namespace UmbracoAdvanced.Core;
+namespace UmbracoAdvanced.Core.Services;
 
 public class ProductService : IProductService
 {
@@ -18,7 +16,7 @@ public class ProductService : IProductService
 
     public List<ProductDTO> GetAll()
     {
-        return new List<ProductDTO>()
+        return new List<ProductDTO>
         {
             new() { Id = 1, Name = "Product 1" },
             new() { Id = 2, Name = "Product 2" },
@@ -39,7 +37,7 @@ public class ProductService : IProductService
             .FirstOrDefault(x => x.ContentType.Alias == Home.ModelTypeAlias)
             ?.Descendant<Products>()
             ?.Children<Product>()
-            ?.Take(number);
+            ?.Take(number).ToList();
 
         if (products != null && products.Any())
         {

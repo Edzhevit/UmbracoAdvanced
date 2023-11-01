@@ -6,7 +6,7 @@ namespace UmbracoAdvanced.Core.Models.NPoco;
 [TableName("ContactRequest")]
 [PrimaryKey("Id", AutoIncrement = true)]
 [ExplicitColumns]
-public class ContactRequestDBModel
+public class ContactRequest
 {
     [PrimaryKeyColumn(AutoIncrement = true, IdentitySeed = 1)]
     [Column("Id")]

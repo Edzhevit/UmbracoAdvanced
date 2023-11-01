@@ -4,11 +4,11 @@ using Umbraco.Cms.Core.Notifications;
 
 namespace UmbracoAdvanced.Core.NotificationHandlers;
 
-public class ContentPublishingNotificationHandler : INotificationHandler<ContentPublishingNotification>
+public class ContentPublishing : INotificationHandler<ContentPublishingNotification>
 {
-    private readonly ILogger<ContentPublishingNotificationHandler> _logger;
+    private readonly ILogger<ContentPublishing> _logger;
 
-    public ContentPublishingNotificationHandler(ILogger<ContentPublishingNotificationHandler> logger)
+    public ContentPublishing(ILogger<ContentPublishing> logger)
     {
         _logger = logger;
     }

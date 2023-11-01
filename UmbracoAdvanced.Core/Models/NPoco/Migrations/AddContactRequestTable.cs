@@ -5,16 +5,12 @@ namespace UmbracoAdvanced.Core.Models.NPoco.Migrations;
 
 public class AddContactRequestTable : MigrationBase
 {
-    public AddContactRequestTable(IMigrationContext context) : base(context)
-    {
-    }
+    public AddContactRequestTable(IMigrationContext context) : base(context) { }
 
     protected override void Migrate()
     {
-        if (!TableExists("ContactRequest"))
-        {
-            Create.Table<ContactRequestDBModel>().Do();
-            Logger.LogDebug("Database table ContactRequests migrated successfully");
-        }
+        if (TableExists("ContactRequest")) return;
+        Create.Table<ContactRequest>().Do();
+        Logger.LogDebug("Database table ContactRequests migrated successfully");
     }
 }

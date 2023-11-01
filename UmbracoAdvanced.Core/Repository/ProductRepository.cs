@@ -16,12 +16,12 @@ namespace UmbracoAdvanced.Core.Repository;
 public class ProductRepository : IProductRepository
 {
     private readonly Guid _productsMediaFolder = Guid.Parse("1ad4e9a3-4ad5-476c-aba2-9602e34e323f");
-    private string _productNameAlias = string.Empty;
-    private string _productPriceAlias = string.Empty;
-    private string _productCategoriesAlias = string.Empty;
-    private string _productDescriptionAlias = string.Empty;
-    private string _productSkuAlias = string.Empty;
-    private string _productPhotoAlias = string.Empty;
+    private readonly string _productNameAlias;
+    private readonly string _productPriceAlias;
+    private readonly string _productCategoriesAlias;
+    private readonly string _productDescriptionAlias;
+    private readonly string _productSkuAlias;
+    private readonly string _productPhotoAlias;
 
     private readonly IUmbracoContextFactory _contextFactory;
     private readonly IContentService _contentService;
@@ -33,9 +33,10 @@ public class ProductRepository : IProductRepository
     private readonly MediaUrlGeneratorCollection _mediaUrlGeneratorCollection;
     private readonly IContentTypeBaseServiceProvider _contentTypeBaseServiceProvider;
     // This is needed to retrieve property alias from an umbraco object
-    private readonly IPublishedSnapshotAccessor _publishedSnapshotAccessor;
 
-    public ProductRepository(IUmbracoContextFactory contextFactory, IContentService contentService, IMediaService mediaService, MediaFileManager mediaFileManager, IShortStringHelper shortStringHelper, MediaUrlGeneratorCollection mediaUrlGeneratorCollection, IContentTypeBaseServiceProvider contentTypeBaseServiceProvider, IPublishedSnapshotAccessor publishedSnapshotAccessor)
+    public ProductRepository(IUmbracoContextFactory contextFactory, IContentService contentService, IMediaService mediaService,
+        MediaFileManager mediaFileManager, IShortStringHelper shortStringHelper, MediaUrlGeneratorCollection mediaUrlGeneratorCollection, 
+        IContentTypeBaseServiceProvider contentTypeBaseServiceProvider, IPublishedSnapshotAccessor publishedSnapshotAccessor)
     {
         _contextFactory = contextFactory;
         _contentService = contentService;
@@ -44,14 +45,14 @@ public class ProductRepository : IProductRepository
         _shortStringHelper = shortStringHelper;
         _mediaUrlGeneratorCollection = mediaUrlGeneratorCollection;
         _contentTypeBaseServiceProvider = contentTypeBaseServiceProvider;
-        _publishedSnapshotAccessor = publishedSnapshotAccessor;
+        var snapshotAccessor = publishedSnapshotAccessor;
 
-        _productNameAlias = Product.GetModelPropertyType(_publishedSnapshotAccessor, x => x.ProductName).Alias;
-        _productPriceAlias = Product.GetModelPropertyType(_publishedSnapshotAccessor, x => x.Price).Alias;
-        _productCategoriesAlias = Product.GetModelPropertyType(_publishedSnapshotAccessor, x => x.Category).Alias;
-        _productDescriptionAlias = Product.GetModelPropertyType(_publishedSnapshotAccessor, x => x.Description).Alias;
-        _productSkuAlias = Product.GetModelPropertyType(_publishedSnapshotAccessor, x => x.Sku).Alias;
-        _productPhotoAlias = Product.GetModelPropertyType(_publishedSnapshotAccessor, x => x.Photos).Alias;
+        _productNameAlias = Product.GetModelPropertyType(snapshotAccessor, x => x.ProductName)?.Alias;
+        _productPriceAlias = Product.GetModelPropertyType(snapshotAccessor, x => x.Price)?.Alias;
+        _productCategoriesAlias = Product.GetModelPropertyType(snapshotAccessor, x => x.Category)?.Alias;
+        _productDescriptionAlias = Product.GetModelPropertyType(snapshotAccessor, x => x.Description)?.Alias;
+        _productSkuAlias = Product.GetModelPropertyType(snapshotAccessor, x => x.Sku)?.Alias;
+        _productPhotoAlias = Product.GetModelPropertyType(snapshotAccessor, x => x.Photos)?.Alias;
 }
 
     public List<Product> GetProducts(string? productSKU, decimal? maxPrice)
@@ -64,7 +65,7 @@ public class ProductRepository : IProductRepository
             var filteredProducts = productsRoot.Children<Product>()?.Where(x => x.IsPublished());
             if (!string.IsNullOrEmpty(productSKU))
             {
-                filteredProducts = filteredProducts.Where(x => x.Sku.InvariantEquals(productSKU));
+                filteredProducts = filteredProducts?.Where(x => x.Sku.InvariantEquals(productSKU));
             }
             if (maxPrice is { } MaxPrice)
             {
@@ -80,7 +81,7 @@ public class ProductRepository : IProductRepository
     {
         using var cref = _contextFactory.EnsureUmbracoContext();
         var content = cref.UmbracoContext.Content;
-        return (Product)content.GetById(id);
+        return (Product)content?.GetById(id);
     }
 
     public Product Create(ProductCreationItem product)
@@ -111,23 +112,23 @@ public class ProductRepository : IProductRepository
         var productContent = _contentService.GetById(id);
         if (!string.IsNullOrEmpty(product.ProductName))
         {
-            productContent.SetValue(_productNameAlias, product.ProductName);
+            productContent?.SetValue(_productNameAlias, product.ProductName);
         }
         if (product.Price != null)
         {
-            productContent.SetValue(_productPriceAlias, product.Price);
+            productContent?.SetValue(_productPriceAlias, product.Price);
         }
         if (product.Categories != null && product.Categories.Any())
         {
-            productContent.SetValue(_productCategoriesAlias, string.Join(",", product.Categories));
+            productContent?.SetValue(_productCategoriesAlias, string.Join(",", product.Categories));
         }
         if (!string.IsNullOrEmpty(product.Description))
         {
-            productContent.SetValue(_productDescriptionAlias, product.Description);
+            productContent?.SetValue(_productDescriptionAlias, product.Description);
         }
         if (!string.IsNullOrEmpty(product.SKU))
         {
-            productContent.SetValue(_productSkuAlias, product.SKU);
+            productContent?.SetValue(_productSkuAlias, product.SKU);
         }
 
         if (!string.IsNullOrEmpty(product.PhotoFileName) && !string.IsNullOrEmpty(product.Photo))
@@ -135,7 +136,7 @@ public class ProductRepository : IProductRepository
             var productImage = CreateProductImage(product.PhotoFileName, product.Photo);
             if (productImage != null)
             {
-                productContent.SetValue(_productPhotoAlias, productImage);
+                productContent?.SetValue(_productPhotoAlias, productImage);
             }
         }
 
@@ -147,13 +148,9 @@ public class ProductRepository : IProductRepository
     public bool Delete(int id)
     {
         var product = _contentService.GetById(id);
-        if (product != null)
-        {
-            var result = _contentService.Delete(product);
-            return result.Success;
-        }
-
-        return false;
+        if (product == null) return false;
+        var result = _contentService.Delete(product);
+        return result.Success;
     }
 
     private Products? GetProductsRootPage()

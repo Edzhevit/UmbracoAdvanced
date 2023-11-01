@@ -12,10 +12,10 @@ public class ContactRequestService : IContactRequestService
         _scopeProvider = scopeProvider;
     }
 
-    public async Task<ContactRequestDBModel?> GetById(int id)
+    public async Task<ContactRequest?> GetById(int id)
     {
         using var scope = _scopeProvider.CreateScope();
-        return await scope.Database.FirstOrDefaultAsync<ContactRequestDBModel>("SELECT * FROM ContactRequest WHERE ID=@0", id);
+        return await scope.Database.FirstOrDefaultAsync<ContactRequest>("SELECT * FROM ContactRequest WHERE ID=@0", id);
     }
 
     public async Task<int> GetTotalNumber()
@@ -24,18 +24,18 @@ public class ContactRequestService : IContactRequestService
         return await scope.Database.ExecuteScalarAsync<int>("SELECT COUNT(*) FROM ContactRequest");
     }
 
-    public async Task<List<ContactRequestDBModel>> GetAll()
+    public async Task<List<ContactRequest>> GetAll()
     {
         using var scope = _scopeProvider.CreateScope(autoComplete: true);
-        return await scope.Database.FetchAsync<ContactRequestDBModel>("SELECT * FROM ContactRequest");
+        return await scope.Database.FetchAsync<ContactRequest>("SELECT * FROM ContactRequest");
     }
 
     public async Task<int> SaveContactRequest(string name, string email, string message)
     {
-        var contactRequest = new ContactRequestDBModel() { Name = name, Email = email, Message = message };
+        var contactRequest = new ContactRequest { Name = name, Email = email, Message = message };
 
         using var scope = _scopeProvider.CreateScope();
-        var result = await scope.Database.InsertAsync(contactRequest);
+        await scope.Database.InsertAsync(contactRequest);
         scope.Complete();
         return contactRequest.Id;
     }

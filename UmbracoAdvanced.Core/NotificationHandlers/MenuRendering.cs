@@ -4,7 +4,7 @@ using Umbraco.Extensions;
 
 namespace UmbracoAdvanced.Core.NotificationHandlers;
 
-public class MenuRenderingNotificationHandler : INotificationHandler<MenuRenderingNotification>
+public class MenuRendering : INotificationHandler<MenuRenderingNotification>
 {
     public void Handle(MenuRenderingNotification notification)
     {

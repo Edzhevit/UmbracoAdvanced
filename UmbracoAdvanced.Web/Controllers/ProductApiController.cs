@@ -40,9 +40,7 @@ public class ProductApiController : UmbracoApiController
     public IActionResult Create([FromBody]ProductCreationItem request)
     {
         if (!ModelState.IsValid)
-        {
             return BadRequest("Fields error");
-        }
 
         var product = _productRepository.Create(request);
 
@@ -53,14 +51,10 @@ public class ProductApiController : UmbracoApiController
     public IActionResult Update(int id, [FromBody]ProductUpdateItem request)
     {
         if (!ModelState.IsValid)
-        {
             return BadRequest(ModelState);
-        }
 
         if (_productRepository.Get(id) == null)
-        {
             return NotFound();
-        }
 
         var product = _productRepository.Update(id, request);
         return Ok(_umbracoMapper.Map<Product, ProductApiResponseItem>(product));
@@ -70,9 +64,8 @@ public class ProductApiController : UmbracoApiController
     public IActionResult Delete(int id)
     {
         if (_productRepository.Get(id) == null)
-        {
             return NotFound();
-        }
+
         var result = _productRepository.Delete(id);
         return result ? Ok() : NotFound();
     }

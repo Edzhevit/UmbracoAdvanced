@@ -10,7 +10,7 @@ namespace UmbracoAdvanced.Web.Controllers.BackOffice;
 /// </summary>
 public class ProductListingController : UmbracoAuthorizedApiController
 {
-    private IProductService _productService;
+    private readonly IProductService _productService;
 
     public ProductListingController(IProductService productService)
     {

@@ -26,9 +26,8 @@ public class ContactController : SurfaceController
     {
         var contact = await _contactRequestService.GetById(id);
         if (contact == null)
-        {
             return NotFound(new {error = "Contact not found"});
-        }
+
         return Ok(contact);
     }
 
@@ -36,9 +35,7 @@ public class ContactController : SurfaceController
     public async Task<IActionResult> Submit(ContactFormViewModel model)
     {
         if (!ModelState.IsValid)
-        {
             return CurrentUmbracoPage();
-        }
 
         await _contactRequestService.SaveContactRequest(model.Name, model.Email, model.Message);
 

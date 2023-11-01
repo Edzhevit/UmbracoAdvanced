@@ -8,10 +8,10 @@ public class ContactRequestMapping : IMapDefinition
 {
     public void DefineMaps(IUmbracoMapper mapper)
     {
-        mapper.Define<ContactRequestDBModel, ContactRequestResponseItem>((source, context) => new ContactRequestResponseItem(), Map);
+        mapper.Define<ContactRequest, ContactRequestResponseItem>((source, context) => new ContactRequestResponseItem(), Map);
     }
 
-    private void Map(ContactRequestDBModel source, ContactRequestResponseItem target, MapperContext mapperContext)
+    private void Map(ContactRequest source, ContactRequestResponseItem target, MapperContext mapperContext)
     {
         target.Id = source.Id;
         target.Name = source.Name;

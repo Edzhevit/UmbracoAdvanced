@@ -1,6 +1,5 @@
 ﻿using Umbraco.Cms.Core.Composing;
 using Umbraco.Cms.Core.Mapping;
-using UmbracoAdvanced.Core;
 using UmbracoAdvanced.Core.Repository;
 using UmbracoAdvanced.Core.Services;
 using UmbracoAdvanced.Web.Mappings;
