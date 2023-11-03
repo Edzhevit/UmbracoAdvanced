@@ -1,4 +1,6 @@
-﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage
+﻿@using Umbraco.Cms.Core.WebAssets
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage
+@inject IRuntimeMinifier runtimeMinifier
 @{
     Layout = null;
     // Get basic design settings from the homepage
@@ -16,9 +18,9 @@
     <title>@Model.Name - @home.Sitename</title>
     <meta name="description" content="">
     <meta name="author" content="">
-
-    <link rel="stylesheet" href="@Url.Content("~/css/umbraco-starterkit-style.css")" />
-    @await RenderSectionAsync("Header", required: false)
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" /> 
+    @Html.Raw(await runtimeMinifier.RenderCssHereAsync("registered-css-bundle"))
 </head>
 
 <body class="frontpage theme-font-@font theme-color-@colorTheme">
@@ -68,15 +70,24 @@
             </div>
         </div>
     </footer>
+    
 
-    @* 
+    <div class="alert text-center cookiealert" role="alert">
+        <b>Do you like cookies?</b> &#x1F36A; We use cookies to ensure you get the best experience on our website. <a href="/privacy/" target="_blank">Learn more</a>
+        <button type="button" class="btn btn-primary btn-sm acceptcookies">
+            I agree
+        </button>
+    </div>
+@* 
     Wish not to use JQuery?
     Insert this method call to load Umbraco Forms client dependencies without JQuery. @Html.RenderUmbracoFormDependencies()
     *@
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
     <script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.13.1/jquery.validate.min.js"></script>	
     <script src="https://ajax.aspnetcdn.com/ajax/mvc/5.2.3/jquery.validate.unobtrusive.min.js"></script>
-    <script src="@Url.Content("~/scripts/umbraco-starterkit-app.js")"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/js/all.min.js" integrity="sha512-uKQ39gEGiyUJl4AI6L+ekBdGKpGw4xJ55+xyJG7YFlJokPNYegn9KwQ3P8A7aFQAUtUsAQHep+d/lrGqrbPIDQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    @Html.Raw(await runtimeMinifier.RenderJsHereAsync("registered-js-bundle"))
 
 </body>
 

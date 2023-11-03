@@ -12,7 +12,7 @@
     <Content Include="App_Plugins\PeopleListView\peoplelistview.html" />
   </ItemGroup>
 	<ItemGroup>
-		<Content Update="App_Plugins/**" CopyToPublishDirectory="Always"/>
+		<Content Update="App_Plugins/**" CopyToPublishDirectory="Always" />
 	</ItemGroup>
   <ItemGroup>
     <None Include="App_Plugins\BlockListElements\Image\image.controller.js" />
@@ -42,6 +42,7 @@
     <!-- Opt-in to app-local ICU to ensure consistent globalization APIs across different platforms -->
     <PackageReference Include="Microsoft.ICU.ICU4C.Runtime" Version="68.2.0.9" />
     <PackageReference Include="Umbraco.TheStarterKit" Version="11.0.0" />
+    <PackageReference Include="Umbraco.Workflow" Version="12.1.2" />
     <PackageReference Include="uSync" Version="12.2.1" />
     <PackageReference Include="uSync.Complete" Version="12.2.1.1" />
     <ProjectReference Include="..\UmbracoAdvanced.Core\UmbracoAdvanced.Core.csproj" />

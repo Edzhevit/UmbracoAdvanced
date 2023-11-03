@@ -1,4 +1,7 @@
-﻿using Umbraco.Cms.Infrastructure.Scoping;
+﻿using Umbraco.Cms.Core.Services;
+using Umbraco.Cms.Infrastructure.Scoping;
+using Umbraco.Cms.Web.Common;
+using Umbraco.Extensions;
 using UmbracoAdvanced.Core.Models.NPoco;
 
 namespace UmbracoAdvanced.Core.Services;
@@ -6,10 +9,14 @@ namespace UmbracoAdvanced.Core.Services;
 public class ContactRequestService : IContactRequestService
 {
     private readonly IScopeProvider _scopeProvider;
+    private readonly UmbracoHelper _helper;
+    private readonly IContentService _contentService;
 
-    public ContactRequestService(IScopeProvider scopeProvider)
+    public ContactRequestService(IScopeProvider scopeProvider, UmbracoHelper helper, IContentService contentService)
     {
         _scopeProvider = scopeProvider;
+        _helper = helper;
+        _contentService = contentService;
     }
 
     public async Task<ContactRequest?> GetById(int id)
@@ -38,5 +45,18 @@ public class ContactRequestService : IContactRequestService
         await scope.Database.InsertAsync(contactRequest);
         scope.Complete();
         return contactRequest.Id;
+    }
+
+    public void SaveAndPublishContactRequest(string name, string email, string message)
+    {
+        var contactForms = _helper.ContentAtRoot().DescendantsOrSelfOfType("contactForms").FirstOrDefault();
+        if (contactForms != null)
+        {
+            var newContactForm = _contentService.Create("Contact", contactForms.Id, "contactForm");
+            newContactForm.SetValue("contactName", name);
+            newContactForm.SetValue("contactEmail", email);
+            newContactForm.SetValue("contactComment", message);
+            _contentService.SaveAndPublish(newContactForm);
+        }
     }
 }

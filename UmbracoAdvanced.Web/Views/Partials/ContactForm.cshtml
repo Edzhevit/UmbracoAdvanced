@@ -4,26 +4,33 @@
 @{
     var message = TempData["Message"]?.ToString();
 }
-
-<div class="form-group">
-    @using (Html.BeginUmbracoForm<ContactController>(nameof(ContactController.Submit)))
-    {
-    <div>
-        @Html.TextBoxFor(m => m.Name, new {@class="form-control", placeholder = Html.DisplayNameFor(m => m.Name)})
-        @Html.ValidationMessageFor(m => m.Name)
-    </div>
-    <div>
-        @Html.TextBoxFor(m => m.Email, new {@class="form-control", placeholder = Html.DisplayNameFor(m => m.Email)})
-        @Html.ValidationMessageFor(m => m.Email)
-    </div>
-    <div>
-        @Html.TextAreaFor(m => m.Message, new {@class="form-control", placeholder = Html.DisplayNameFor(m => m.Message)})
-        @Html.ValidationMessageFor(m => m.Message)
-    </div>
-    <input type="submit" name="Submit" value="Submit"/>
-   @if (!string.IsNullOrEmpty(message))
-   {
-       @message
-   }
+@if (!string.IsNullOrEmpty(message))
+{
+    @message
 }
-</div>
+else
+{
+    <div class="form-group">
+        @using (Html.BeginUmbracoForm<ContactController>(nameof(ContactController.Submit)))
+        {
+            <div>
+                @Html.TextBoxFor(m => m.Name, new {@class="form-control", placeholder = Html.DisplayNameFor(m => m.Name)})
+                @Html.ValidationMessageFor(m => m.Name)
+            </div>
+            @* <div class="form-group"> *@
+            @*     <label for="your-name-textbox">Your name *</label> *@
+            @*     <span class="field-validation-valid" asp-validation-for="Name"></span> *@
+            @*     <input class="form-control form-control-lg" placeholder="Your Name" maxlength="80" asp-for="Name" /> *@
+            @* </div> *@
+            <div>
+                @Html.TextBoxFor(m => m.Email, new {@class="form-control", placeholder = Html.DisplayNameFor(m => m.Email)})
+                @Html.ValidationMessageFor(m => m.Email)
+            </div>
+            <div>
+                @Html.TextAreaFor(m => m.Message, new {@class="form-control", placeholder = Html.DisplayNameFor(m => m.Message)})
+                @Html.ValidationMessageFor(m => m.Message)
+            </div>
+            <input type="submit" name="Submit" value="Submit"/>
+        }
+    </div>
+}

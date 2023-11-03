@@ -22,8 +22,9 @@ public class FindContentByOldUrl : IContentFinder
             ?.Descendants<ContentPage>()
             .FirstOrDefault(x => x.Value<string>("oldUrl") == path);
 
-        if (match != null)
+        if (match == null)
         {
+            request.SetRedirectPermanent("/404-error-page");
             return Task.FromResult(false);
         }
 

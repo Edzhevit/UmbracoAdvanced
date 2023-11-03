@@ -17,9 +17,11 @@ namespace UmbracoAdvanced.Web.Controllers;
 public class ContactController : SurfaceController
 {
     private readonly IContactRequestService _contactRequestService;
-    public ContactController(IUmbracoContextAccessor umbracoContextAccessor, IUmbracoDatabaseFactory databaseFactory, ServiceContext services, AppCaches appCaches, IProfilingLogger profilingLogger, IPublishedUrlProvider publishedUrlProvider, IContactRequestService contactRequestService) : base(umbracoContextAccessor, databaseFactory, services, appCaches, profilingLogger, publishedUrlProvider)
+    private readonly IEmailService _emailService;
+    public ContactController(IUmbracoContextAccessor umbracoContextAccessor, IUmbracoDatabaseFactory databaseFactory, ServiceContext services, AppCaches appCaches, IProfilingLogger profilingLogger, IPublishedUrlProvider publishedUrlProvider, IContactRequestService contactRequestService, IEmailService emailService) : base(umbracoContextAccessor, databaseFactory, services, appCaches, profilingLogger, publishedUrlProvider)
     {
         _contactRequestService = contactRequestService;
+        _emailService = emailService;
     }
 
     public async Task<IActionResult> GetContact(int id)
@@ -35,9 +37,14 @@ public class ContactController : SurfaceController
     public async Task<IActionResult> Submit(ContactFormViewModel model)
     {
         if (!ModelState.IsValid)
+        {
+            ModelState.AddModelError("Error", "Please check the form.");
             return CurrentUmbracoPage();
+        }
 
+        _contactRequestService.SaveAndPublishContactRequest(model.Name, model.Email, model.Message);
         await _contactRequestService.SaveContactRequest(model.Name, model.Email, model.Message);
+        _emailService.SendContactNotificationToAdmin(model.Name, model.Email, model.Message);
 
         TempData["Message"] = "Submitted successfully";
         return RedirectToCurrentUmbracoPage(QueryString.Create("submit", "true"));

@@ -8,4 +8,5 @@ public interface IContactRequestService
     Task<int> GetTotalNumber();
     Task<List<ContactRequest>> GetAll();
     Task<int> SaveContactRequest(string name, string email, string message);
+    void SaveAndPublishContactRequest(string name, string email, string message);
 }

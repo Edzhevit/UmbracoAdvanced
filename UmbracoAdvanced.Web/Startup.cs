@@ -47,8 +47,10 @@ public class Startup
             .AddNotificationHandler<ContentPublishedNotification, ContentPublished>()
             .AddNotificationHandler<SendingContentNotification, SendingContent>()
             .AddNotificationHandler<MenuRenderingNotification, MenuRendering>()
+            .AddNotificationHandler<UmbracoApplicationStartingNotification, CreateBundles>()
             .Build();
 
+        services.AddScoped<IEmailService, EmailService>();
         services.AddScoped<IContactRequestService, ContactRequestService>();
 
         services.AddDbContext<DbContext>(options =>
@@ -112,7 +114,12 @@ public class Startup
         }
 
         app.UseHttpsRedirection();
-
+        app.Use(async (context, next) =>
+        {
+            context.Response.Headers.Add("X-Frame-Options", "SAMEORIGIN");
+            context.Response.Headers.Add("X-Content-Type-Options", "nosniff");
+            await next();
+        });
         app.UseUmbraco()
             .WithMiddleware(u =>
             {
